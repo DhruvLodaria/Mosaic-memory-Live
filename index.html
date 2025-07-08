@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything Will Bring You Back to Me</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f9f1f2; /* pastel pink */
+        overflow: hidden;
+        font-family: 'Georgia', serif;
+    }
+
+    .background-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Brush Script MT', cursive, sans-serif;
+        font-size: 2em;
+        color: rgba(166,124,142,0.3);
+        text-align: center;
+        max-width: 80%;
+        word-wrap: break-word;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .image {
+        position: absolute;
+        border: 2px solid rgba(166,124,142,0.3); /* subtle elegant border */
+        border-radius: 8px;
+        cursor: grab;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        width: 160px;
+        height: 120px;
+        overflow: hidden;
+    }
+
+    .image:active {
+        cursor: grabbing;
+    }
+
+    .inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .flipped .inner {
+        transform: rotateY(180deg);
+    }
+
+    .front, .back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        top: 0; left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8em;
+        text-align: center;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 8px;
+    }
+
+    .front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .back {
+        background: #a67c8e;
+        color: #fff;
+        transform: rotateY(180deg);
+    }
+</style>
+</head>
+<body>
+
+<div class="background-message">Everything will bring you back to me</div>
+
+<script>
+/* === CONFIGURATION SECTION === */
+const config = [
+  {filename: "Snapchat-1989604796.jpg", canFlip: true, message: ""},
+  {filename: "Snapchat-1425191562.jpg", canFlip: true, message: "Our first beach pic"},
+  {filename: "Snapchat-323116330.jpg", canFlip: true, message: "That dress was killer"},
+  {filename: "Snapchat-1283861864.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1358873386.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1569802890.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1672586311.jpg", canFlip: true, message: "A day spent well"},
+  {filename: "Snapchat-1756725569.jpg", canFlip: true, message: "I wish you were here"},
+  {filename: "Snapchat-964908332.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1950552558.jpg", canFlip: true, message: "Epic movie date"},
+  {filename: "Snapchat-964390289.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-992323923.jpg", canFlip: true, message: "Miss this day"},
+  {filename: "Snapchat-1096109853.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1239412220.jpg", canFlip: true, message: "You look hot in saaree"},
+  {filename: "Snapchat-43754079.jpg", canFlip: true, message: "Our First Kiss"},
+  {filename: "Snapchat-550309420.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-662443045.jpg", canFlip: true, message: "I miss baby Nemo, I am sorry I lost her"},
+  {filename: "Snapchat-1002904146.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1962883121.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-131976981.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-143432536.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-231643356.jpg", canFlip: true, message: "You looked awesome that day"},
+  {filename: "Snapchat-318301288.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-378364890.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-455688933.jpg", canFlip: true, message: "First garba"},
+  {filename: "Snapchat-501442682.jpg", canFlip: true, message: "Our goofy vc"},
+  {filename: "Snapchat-593739565.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-604131056.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-748880567.jpg", canFlip: true, message: "First Snow Park"},
+  {filename: "Snapchat-757372170.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-815409085.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1310488867.jpg", canFlip: true, message: "I miss these days"},
+  {filename: "Snapchat-1429409078.jpg", canFlip: true, message: "I miss sleepy Nemo"},
+  {filename: "Snapchat-1638236071.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1748684620.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1975278638.jpg", canFlip: true, message: "Sexy AF"},
+  {filename: "Snapchat-2055612714.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-56151574.jpg", canFlip: true, message: "I wish to hold you this close to me always"},
+  {filename: "Snapchat-149648680.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-361844699.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-434116790.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-660761601.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-689451216.jpg", canFlip: true, message: "I miss us"},
+  {filename: "Snapchat-916541798.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1178630152.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1568146202.jpg", canFlip: false, message: ""},
+  {filename: "Snapchat-1664908042.jpg", canFlip: true, message: "I am always here Nemo"},
+  {filename: "Snapchat-1989604796.jpg", canFlip: true, message: "I am here"},
+
+];
+
+/* === SCRIPT START === */
+const body = document.body;
+const vw = window.innerWidth;
+const vh = window.innerHeight;
+
+// Keep track of highest z-index
+let zCounter = 1;
+
+// Create images
+config.forEach(item => {
+    const container = document.createElement('div');
+    container.className = 'image';
+    container.style.left = Math.random() * (vw - 120) + 'px';
+    container.style.top = Math.random() * (vh - 120) + 'px';
+
+    const inner = document.createElement('div');
+    inner.className = 'inner';
+
+    const front = document.createElement('div');
+    front.className = 'front';
+    const img = document.createElement('img');
+    img.src = item.filename;
+    img.alt = '';
+    front.appendChild(img);
+
+    const back = document.createElement('div');
+    back.className = 'back';
+    back.innerText = item.canFlip ? item.message || "A beautiful memory lives here..." : "";
+
+    inner.appendChild(front);
+    if(item.canFlip) inner.appendChild(back);
+    container.appendChild(inner);
+
+    body.appendChild(container);
+
+    /* === Dragging === */
+    let offsetX, offsetY, dragging = false;
+
+    const startDrag = (e) => {
+        dragging = true;
+        zCounter++;
+        container.style.zIndex = zCounter;
+        const rect = container.getBoundingClientRect();
+        offsetX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+        offsetY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+        e.preventDefault();
+    };
+
+    const onDrag = (e) => {
+        if(!dragging) return;
+        let x = (e.touches ? e.touches[0].clientX : e.clientX) - offsetX;
+        let y = (e.touches ? e.touches[0].clientY : e.clientY) - offsetY;
+
+        // Keep inside viewport
+        x = Math.max(0, Math.min(x, vw - container.offsetWidth));
+        y = Math.max(0, Math.min(y, vh - container.offsetHeight));
+
+        container.style.left = x + 'px';
+        container.style.top = y + 'px';
+    };
+
+    const endDrag = () => {
+        dragging = false;
+    };
+
+    container.addEventListener('mousedown', startDrag);
+    container.addEventListener('mousemove', onDrag);
+    container.addEventListener('mouseup', endDrag);
+    container.addEventListener('mouseleave', endDrag);
+
+    container.addEventListener('touchstart', startDrag, {passive:false});
+    container.addEventListener('touchmove', onDrag, {passive:false});
+    container.addEventListener('touchend', endDrag);
+
+    /* === Flip on click === */
+    if(item.canFlip) {
+        container.addEventListener('click', (e) => {
+            if(!dragging) {
+                container.classList.toggle('flipped');
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>
